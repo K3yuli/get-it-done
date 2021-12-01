@@ -1,18 +1,3 @@
-// ---------------------------- NOTES -------------------------------
-// var getUserRepos = function(user) {
-//     fetch("https://api.github.com/users/octocat/repos").then(function(response) {
-//         response.json().then(function(data) {
-//             console.log(data);
-//         });gy    
-    
-//     });
-
-//     // this console log would print first because of asynchronous behavior
-//     // will print first because its not dependent on any asynchronous actions
-//     console.log("outside");
-// };
-// ---------------------------- NOTES --------------------------------
-
 // var for the username search form
 var userFormEl = document.querySelector("#user-form");
 var nameInputEl = document.querySelector("#username");
@@ -50,6 +35,7 @@ var getUserRepos = function(user) {
         if(response.ok) {
     // let's set it up so that when the response data is converted to JSON, it will be sent from getUserRepos() to displayRepos()
       response.json().then(function(data) {
+          console.log(data);
         displayRepos(data, user);
         });
     } else {
@@ -70,7 +56,6 @@ var displayRepos = function(repos, searchTerm) {
         return;
     }
     // clear old content
-    repoContainerEl.textContent = "";
     repoSearchTerm.textContent = searchTerm;
     // 
     console.log(repos);
@@ -81,8 +66,9 @@ var displayRepos = function(repos, searchTerm) {
         var repoName = repos[i].owner.login + "/" + repos[i].name;
 
         // create a container for each repo
-        var repoEl = document.createElement("div");
+        var repoEl = document.createElement("a");
         repoEl.classList = "list-item flex-row justify-space-between align-center";
+        repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
 
         // create a span  element to hold repository name
         var titleEl = document.createElement("span");
