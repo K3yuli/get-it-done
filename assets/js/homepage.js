@@ -15,13 +15,30 @@
 
 // var for the username search form
 var userFormEl = document.querySelector("#user-form");
-var useInputEl = document.querySelector("#username");
+var nameInputEl = document.querySelector("#username");
 
 // var for the repo container section
 var repoContainerEl = document.querySelector("#repos-container");
 var repoSearchTerm = document.querySelector("#repo-search-term");
 
 
+
+var formSubmitHandler = function(event) {
+    // prevent page from refreshing
+    event.preventDefault();
+    // get value from input element
+    var username = nameInputEl.value.trim();
+
+    if(username) {
+        getUserRepos(username);
+        // clear old content
+        repoContainerEl.textContent = "";
+        nameInputEl.value = "";
+    } else {
+        alert("please enter a GitHub username");
+    }
+    console.log(event);
+};
 
 var getUserRepos = function(user) {
     // format the github api url
@@ -36,7 +53,7 @@ var getUserRepos = function(user) {
         displayRepos(data, user);
         });
     } else {
-        alert("Error: Github User Not Found");
+        alert('Error: ' + response.statusText);
     }
     })
     .catch(function(error) {
@@ -45,19 +62,6 @@ var getUserRepos = function(user) {
     });
 };
 
-var formSubmitHandler = function(event) {
-    event.preventDefault();
-    // get value from input element
-    var username = nameInputEl.value.trim();
-
-    if(username) {
-        getUserRepos(username);
-        nameInputEl.value = "";
-    } else {
-        alert("please enter a GitHub username")
-    }
-    console.log(event);
-}
 
 var displayRepos = function(repos, searchTerm) {
     // check if api returned any repos
@@ -104,4 +108,5 @@ var displayRepos = function(repos, searchTerm) {
     }
 };
 
+// add event listener to form
   userFormEl.addEventListener("submit", formSubmitHandler);
